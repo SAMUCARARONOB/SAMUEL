@@ -1,0 +1,229 @@
+local player = game.Players.LocalPlayer
+
+-- Interface GUI
+local gui = Instance.new("ScreenGui")
+gui.Parent = player:WaitForChild("PlayerGui")
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 450, 0, 350)
+frame.Position = UDim2.new(0.25, -225, 0.5, -175)  -- Posição ajustada para dar espaço à nova interface
+frame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+frame.BorderSizePixel = 0
+frame.Active = true
+frame.Draggable = true  -- Permitir arrastar a interface inteira
+frame.Parent = gui
+
+-- Título
+local titleBar = Instance.new("Frame")
+titleBar.Size = UDim2.new(1, 0, 0, 40)
+titleBar.Position = UDim2.new(0, 0, 0, 0)
+titleBar.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+titleBar.BorderSizePixel = 0
+titleBar.Parent = frame
+
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Size = UDim2.new(0.6, 0, 1, 0)
+titleLabel.Position = UDim2.new(0, 0, 0, 0)
+titleLabel.BackgroundTransparency = 1
+titleLabel.Text = "Editor de Scripts"
+titleLabel.TextColor3 = Color3.new(1, 1, 1)
+titleLabel.Font = Enum.Font.SourceSansBold
+titleLabel.TextSize = 24
+titleLabel.Parent = titleBar
+
+local sizeLabel = Instance.new("TextLabel")
+sizeLabel.Size = UDim2.new(0.2, 0, 1, 0)
+sizeLabel.Position = UDim2.new(0.6, 0, 0, 0)
+sizeLabel.BackgroundTransparency = 1
+sizeLabel.Text = "TAMANHO PIXELS INTERFACE"
+sizeLabel.TextColor3 = Color3.new(1, 1, 1)
+sizeLabel.Font = Enum.Font.SourceSans
+sizeLabel.TextSize = 14
+sizeLabel.Parent = titleBar
+
+local sizeTextBox = Instance.new("TextBox")
+sizeTextBox.Size = UDim2.new(0.2, 0, 1, 0)
+sizeTextBox.Position = UDim2.new(0.8, 0, 0, 0)
+sizeTextBox.BackgroundTransparency = 0.5
+sizeTextBox.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
+sizeTextBox.TextColor3 = Color3.new(1, 1, 1)
+sizeTextBox.Text = "450/350"  -- Valor inicial
+sizeTextBox.Font = Enum.Font.SourceSans
+sizeTextBox.TextSize = 14
+sizeTextBox.ClearTextOnFocus = true
+sizeTextBox.Parent = titleBar
+
+local scriptBox = Instance.new("TextBox")
+scriptBox.Size = UDim2.new(1, -20, 1, -60)  -- Tamanho do campo de texto
+scriptBox.Position = UDim2.new(0, 10, 0, 50)
+scriptBox.BackgroundTransparency = 0.5
+scriptBox.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
+scriptBox.TextColor3 = Color3.new(1, 1, 1)
+scriptBox.TextWrapped = true
+scriptBox.TextXAlignment = Enum.TextXAlignment.Left
+scriptBox.TextYAlignment = Enum.TextYAlignment.Top
+scriptBox.Text = "-- Escreva seu script aqui"
+scriptBox.Font = Enum.Font.SourceSans
+scriptBox.TextSize = 14
+scriptBox.ClearTextOnFocus = false
+scriptBox.MultiLine = true
+scriptBox.Parent = frame
+
+local runButton = Instance.new("TextButton")
+runButton.Size = UDim2.new(1, -20, 0, 30)
+runButton.Position = UDim2.new(0, 10, 1, -40)
+runButton.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+runButton.TextColor3 = Color3.new(1, 1, 1)
+runButton.Text = "Executar Script"
+runButton.Font = Enum.Font.SourceSansBold
+runButton.TextSize = 18
+runButton.Parent = frame
+
+-- Interface para mostrar erros e correções
+local errorFrame = Instance.new("Frame")
+errorFrame.Size = UDim2.new(0, 450, 0, 350)
+errorFrame.Position = UDim2.new(1, 0, 0, 0)  -- Grudado na interface principal
+errorFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+errorFrame.BorderSizePixel = 0
+errorFrame.Parent = frame  -- Adicionado como filho da interface principal para mover junto
+
+local errorTitleBar = Instance.new("Frame")
+errorTitleBar.Size = UDim2.new(1, 0, 0, 40)
+errorTitleBar.Position = UDim2.new(0, 0, 0, 0)
+errorTitleBar.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+errorTitleBar.BorderSizePixel = 0
+errorTitleBar.Parent = errorFrame
+
+local errorTitleLabel = Instance.new("TextLabel")
+errorTitleLabel.Size = UDim2.new(1, 0, 1, 0)
+errorTitleLabel.Position = UDim2.new(0, 0, 0, 0)
+errorTitleLabel.BackgroundTransparency = 1
+errorTitleLabel.Text = "Erros e Correções"
+errorTitleLabel.TextColor3 = Color3.new(1, 1, 1)
+errorTitleLabel.Font = Enum.Font.SourceSansBold
+errorTitleLabel.TextSize = 24
+errorTitleLabel.Parent = errorTitleBar
+
+local errorScrollFrame = Instance.new("ScrollingFrame")
+errorScrollFrame.Size = UDim2.new(1, -10, 1, -60)
+errorScrollFrame.Position = UDim2.new(0, 5, 0, 50)
+errorScrollFrame.CanvasSize = UDim2.new(0, 0, 1, 0)
+errorScrollFrame.ScrollBarThickness = 10
+errorScrollFrame.BackgroundTransparency = 0.5
+errorScrollFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+errorScrollFrame.Parent = errorFrame
+
+local errorContent = Instance.new("TextLabel")
+errorContent.Size = UDim2.new(1, -10, 1, -10)
+errorContent.Position = UDim2.new(0, 5, 0, 5)
+errorContent.BackgroundTransparency = 1
+errorContent.TextColor3 = Color3.new(1, 1, 1)
+errorContent.TextWrapped = true
+errorContent.Font = Enum.Font.SourceSans
+errorContent.TextSize = 14
+errorContent.TextXAlignment = Enum.TextXAlignment.Left
+errorContent.TextYAlignment = Enum.TextYAlignment.Top
+errorContent.Text = "Erros detectados:"
+errorContent.Parent = errorScrollFrame
+
+-- Função para checar e corrigir o script
+local function checkAndCorrectScript(scriptSource)
+    local errors = {}
+    local correctedScript = ""
+    local lines = {}
+    for line in scriptSource:gmatch("([^\n]*)\n?") do
+        table.insert(lines, line)
+    end
+    for i, line in ipairs(lines) do
+        local func, err = loadstring(line)
+        if not func then
+            table.insert(errors, "Linha " .. i .. ": " .. err)
+        else
+            correctedScript = correctedScript .. line .. "\n"
+        end
+    end
+    return errors, correctedScript
+end
+
+local function executeValidParts(scriptSource)
+    local validScript = ""
+    local lines = {}
+    for line in scriptSource:gmatch("([^\n]*)\n?") do
+        table.insert(lines, line)
+    end
+    for _, line in ipairs(lines) do
+        local func, err = loadstring(line)
+        if func then
+            validScript = validScript .. line .. "\n"
+        end
+    end
+    local finalFunc, finalErr = loadstring(validScript)
+    if finalFunc then
+        local status, runErr = pcall(finalFunc)
+        if not status then
+            warn("Erro ao executar o script válido: " .. runErr)
+        end
+    else
+        warn("Erro ao carregar o script válido: " .. finalErr)
+    end
+end
+
+sizeTextBox.FocusLost:Connect(function()
+    local sizeText = sizeTextBox.Text
+    local width, height = sizeText:match("(%d+)/(%d+)")
+    if width and height then
+        width = tonumber(width)
+        height = tonumber(height)
+        frame.Size = UDim2.new(0, width, 0, height)
+        errorFrame.Size = UDim2.new(0, width, 0, height)
+        scriptBox.Size = UDim2.new(1, -20, 1, -60)
+        errorScrollFrame.Size = UDim2.new(1, -10, 1, -60)
+    else
+        warn("Formato de tamanho inválido. Use LARGURA/ALTURA.")
+    end
+end)
+
+runButton.MouseButton1Click:Connect(function()
+    local scriptSource = scriptBox.Text
+    local errors, correctedScript = checkAndCorrectScript(scriptSource)
+    if #errors > 0 then
+        errorContent.Text = "Erros detectados:\n" .. table.concat(errors, "\n")
+        -- Adicionar botões após 1 segundo
+        wait(1)
+        local showCorrectedButton = Instance.new("TextButton")
+        showCorrectedButton.Size = UDim2.new(1, -20, 0, 30)
+        showCorrectedButton.Position = UDim2.new(0, 10, 1, -70)
+        showCorrectedButton.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+        showCorrectedButton.TextColor3 = Color3.new(1, 1, 1)
+        showCorrectedButton.Text = "Mostrar Script Corrigido"
+        showCorrectedButton.Font = Enum.Font.SourceSansBold
+        showCorrectedButton.TextSize = 14
+        showCorrectedButton.Parent = errorScrollFrame
+
+        local copyCorrectedButton = Instance.new("TextButton")
+        copyCorrectedButton.Size = UDim2.new(1, -20, 0, 30)
+        copyCorrectedButton.Position = UDim2.new(0, 10, 1, -30)
+        copyCorrectedButton.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+        copyCorrectedButton.TextColor3 = Color3.new(1, 1, 1)
+        copyCorrectedButton.Text = "Copiar Script Corrigido"
+        copyCorrectedButton.Font = Enum.Font.SourceSansBold
+        copyCorrectedButton.TextSize = 14
+        copyCorrectedButton.Parent = errorScrollFrame
+
+        showCorrectedButton.MouseButton1Click:Connect(function()
+            errorContent.Text = "Script Corrigido:\n" .. correctedScript
+        end)
+
+        copyCorrectedButton.MouseButton1Click:Connect(function()
+            if setclipboard then
+                setclipboard(correctedScript)
+                errorContent.Text = "Script corrigido copiado para a área de transferência."
+            else
+                warn("setclipboard não está disponível neste ambiente.")
+            end
+        end)
+    else
+        errorContent.Text = "Nenhum erro encontrado."
+    end
+    executeValidParts(scriptSource)
+end)
